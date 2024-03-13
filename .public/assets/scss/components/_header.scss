@@ -1,0 +1,49 @@
+.header {
+  position: fixed;
+  padding: 24px 0 120px;
+  top: 0;
+  left: 0;
+  width: 94px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid var(--gray);
+  transition: var(--transition);
+  z-index: 9;
+
+  .container {
+    height: 100%;
+    @include flex-col(center, space-between, 74px);
+  }
+
+  .menu {
+    margin-bottom: auto;
+    @include center(30px, column);
+    transform: rotate(180deg);
+
+    &-item {
+      font-size: 20px;
+      font-weight: 300;
+      writing-mode: vertical-rl;
+    }
+  }
+
+  &__socials {
+    @include center(25px, column);
+  }
+
+  &__menu {
+    img:nth-child(2) {
+      display: none;
+    }
+  }
+
+  @include media("3xl") {
+    width: 80px;
+  }
+}
+
+// .header-active {
+// }
+
+// .header-sticky {
+// }
