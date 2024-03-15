@@ -13,6 +13,7 @@ declare global {
   const Img: typeof import('components/shared/Img.astro')['default']
   const P: typeof import('components/shared/P.astro')['default']
   const Row: typeof import('components/shared/Row.astro')['default']
+  const TheCatalog: typeof import('components/TheCatalog.astro')['default']
   const TheFooter: typeof import('components/TheFooter.astro')['default']
   const TheForm: typeof import('components/TheForm.astro')['default']
   const TheHeader: typeof import('components/TheHeader.astro')['default']

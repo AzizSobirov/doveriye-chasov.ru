@@ -132,3 +132,189 @@ function successSend(parent) {
     }, 500);
   }, 3000);
 }
+
+class Filter {
+  constructor() {
+    this.minSlider = document.querySelector("#slider-min");
+    this.maxSlider = document.querySelector("#slider-max");
+    this.collectionEl = document.querySelectorAll("#filter-collection li");
+    this.statusEl = document.querySelectorAll("#filter-status li");
+    this.brandEl = document.querySelectorAll("#filter-brand a");
+    this.priceEl = document.querySelector("#filter-price");
+    this.productsEl = document.querySelector("#catalog-products");
+    this.products = null;
+    this.collection = null;
+    this.status = null;
+    this.price_from = 0;
+    this.price_to = 0;
+    this.minPrice = 0;
+    this.maxPrice = 10000000;
+  }
+  init() {
+    let url = new URL(window.location);
+
+    // collection
+    let collection = url.searchParams.get("collection");
+    if (collection) {
+      let isExists = false;
+      this.collectionEl.forEach((item) => {
+        if (item.innerHTML == collection) {
+          this.collection = collection;
+          item.classList.add("active");
+          isExists = true;
+        } else {
+          item.classList.remove("active");
+        }
+      });
+
+      if (!isExists) {
+        this.collection = this.collectionEl[0].innerHTML;
+        this.collectionEl[0].classList.add("active");
+      }
+    } else {
+      this.collection = this.collectionEl[0].innerHTML;
+      this.collectionEl[0].classList.add("active");
+    }
+
+    // status
+    let status = url.searchParams.get("status");
+    if (status) {
+      let isExists = false;
+      this.statusEl.forEach((item) => {
+        if (item.innerHTML == status) {
+          this.status = status;
+          item.classList.add("active");
+          isExists = true;
+        } else {
+          item.classList.remove("active");
+        }
+      });
+
+      if (!isExists) {
+        this.status = this.statusEl[0].innerHTML;
+        this.statusEl[0].classList.add("active");
+      }
+    } else {
+      this.status = this.statusEl[0].innerHTML;
+      this.statusEl[0].classList.add("active");
+    }
+
+    // brand
+    this.brandEl.forEach((item) => {
+      let href = new URL(item.href);
+      if (url.pathname == href.pathname) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+
+    // price from
+    let priceFrom = url.searchParams.get("from");
+    if (priceFrom) {
+      this.price_from = priceFrom;
+    } else {
+      this.price_from = this.minPrice;
+    }
+
+    let priceTo = url.searchParams.get("to");
+    if (priceTo) {
+      this.price_to = priceTo;
+    } else {
+      this.price_to = this.maxPrice;
+    }
+    this.minSlider.value = (this.price_from * 100) / this.maxPrice;
+    this.maxSlider.value = (this.price_to * 100) / this.maxPrice;
+
+    this.save();
+    this.watch();
+    this.render();
+  }
+  watch() {
+    this.collectionEl.forEach((item) => {
+      item.addEventListener("click", () => {
+        this.collection = item.innerHTML;
+        this.collectionEl.forEach((item) => {
+          item.classList.remove("active");
+        });
+        item.classList.add("active");
+        this.save();
+        this.render();
+      });
+    });
+    this.statusEl.forEach((item) => {
+      item.addEventListener("click", () => {
+        this.status = item.innerHTML;
+        this.statusEl.forEach((item) => {
+          item.classList.remove("active");
+        });
+        item.classList.add("active");
+        this.save();
+        this.render();
+      });
+    });
+    this.brandEl.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        this.save(e.target.href);
+      });
+    });
+
+    // price inputs
+
+    const updatePrice = () => {
+      let gap = this.maxPrice - this.minPrice;
+      let fromValue = (gap * this.minSlider.value) / 100 + this.minPrice;
+      let toValue = (gap * this.maxSlider.value) / 100 + this.minPrice;
+
+      this.price_from = Math.floor(fromValue);
+      this.price_to = Math.floor(toValue);
+
+      this.save();
+
+      // document.querySelector("#from").textContent = `$${Math.floor(fromValue)}`;
+      // document.querySelector("#to").textContent = `$${Math.floor(toValue)}`;
+    };
+
+    this.maxSlider.addEventListener("input", () => {
+      let minValue = parseInt(this.minSlider.value);
+      let maxValue = parseInt(this.maxSlider.value);
+      if (maxValue < minValue + 5) {
+        this.minSlider.value = maxValue - 5;
+        if (minValue === parseInt(this.minSlider.min)) {
+          this.maxSlider.value = 5;
+        }
+      }
+      updatePrice();
+    });
+
+    this.minSlider.addEventListener("input", () => {
+      let minValue = parseInt(this.minSlider.value);
+      let maxValue = parseInt(this.maxSlider.value);
+      if (minValue > maxValue - 5) {
+        this.maxSlider.value = minValue + 5;
+        if (maxValue === parseInt(this.maxSlider.max)) {
+          this.minSlider.value = parseInt(this.maxSlider.max) - 5;
+        }
+      }
+      updatePrice();
+    });
+  }
+  render() {
+    //
+  }
+  save(href) {
+    let url = new URL(href || window.location);
+    url.searchParams.set("collection", this.collection);
+    url.searchParams.set("status", this.status);
+    url.searchParams.set("from", this.price_from);
+    url.searchParams.set("to", this.price_to);
+    window.history.pushState({}, "", url);
+    href && window.location.reload();
+  }
+}
+const filter = new Filter();
+
+window.addEventListener("load", () => {
+  filter.init();
+});
