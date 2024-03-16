@@ -1,10 +1,11 @@
 .btn {
-  user-select: none;
-  transition: var(--transition);
-  cursor: pointer;
   @include flex-row;
+  transition: var(--transition);
+  user-select: none;
+  cursor: pointer;
 
   &--primary {
+    position: relative;
     width: 248px;
     height: 52px;
     color: #fff;

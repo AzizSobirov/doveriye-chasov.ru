@@ -313,8 +313,92 @@ class Filter {
     href && window.location.reload();
   }
 }
-const filter = new Filter();
 
-window.addEventListener("load", () => {
-  filter.init();
+let catalog = document.querySelector(".catalog");
+if (catalog) {
+  const filter = new Filter();
+  window.addEventListener("load", () => {
+    filter.init();
+  });
+}
+
+var reviewsSwiperThumbs = new Swiper(".reviews__swiper .swiper-thumbs", {
+  slidesPerView: 6,
+  spaceBetween: 20,
+});
+var reviewsSwiper = new Swiper(".reviews__swiper .swiper", {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  navigation: {
+    nextEl: ".reviews .btn-next",
+    prevEl: ".reviews .btn-prev",
+  },
+  thumbs: {
+    swiper: reviewsSwiperThumbs,
+  },
+});
+
+//** fancybox **//
+let dataFancybox = ["reviews"];
+dataFancybox.forEach((name) => {
+  Fancybox.bind(`[data-fancybox="${name}"]`, {
+    Images: { Panzoom: { maxScale: 3 } },
+  });
+});
+
+// //** yandex map */
+ymaps.ready(function () {
+  const data = {
+    center: [59.915126, 30.336131],
+    marker: [59.915126, 30.336131],
+    icon: "/assets/img/icons/marker.svg",
+    city: "г. Санкт-Петербург",
+    street: "ул. Заозерная д 3/11",
+  };
+
+  var myMap = new ymaps.Map(
+      "yamap",
+      {
+        center: data.center,
+        zoom: 14,
+        controls: [],
+        behaviors: [
+          "drag",
+          "dblClickZoom",
+          "rightMouseButtonMagnifier",
+          "multiTouch",
+        ],
+      },
+      {
+        suppressMapOpenBlock: true,
+      }
+    ),
+    MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+      '<div style="color: #000; font-weight: bold;">$[properties.iconContent]</div>'
+    ),
+    myPlacemark0 = new ymaps.Placemark(
+      data.marker,
+      {
+        balloonContentHeader: `<b style='color:#000;'>${data.city}</b>`,
+        balloonContentFooter: data.street,
+      },
+      {
+        iconLayout: "default#image",
+        iconImageHref: data.icon,
+        iconImageSize: [40, 50],
+        iconImageOffset: [-20 / 2, -20],
+      }
+    );
+  myMap.geoObjects.add(myPlacemark0);
+  var zoomControl = new ymaps.control.ZoomControl({
+    options: {
+      size: "small",
+      position: {
+        top: 15,
+        left: "auto",
+        right: 15,
+      },
+    },
+  });
+  myMap.controls.add(zoomControl);
 });

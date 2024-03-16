@@ -237,4 +237,240 @@
   }
 }
 
-// @include show(".intro", true);
+// ** About ** //
+.about {
+  padding-bottom: 40px;
+
+  .text-h3 {
+    margin: 85px 0 50px;
+  }
+
+  .row {
+    width: 100%;
+    align-items: flex-start;
+    gap: 60px;
+  }
+
+  .col {
+    width: 100%;
+    gap: 24px;
+  }
+
+  .ucard {
+    position: relative;
+    padding: 48px 30px;
+    width: 100%;
+    min-height: 355px;
+    color: #fff;
+    background: radial-gradient(
+      427.71% 60.5% at 2.81% 45.35%,
+      rgb(160, 82, 25) 0%,
+      rgb(87, 60, 40) 100%
+    );
+    border-radius: 20px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 360px;
+      height: 100%;
+      background: url(../img/about/bg.svg) center/cover no-repeat;
+    }
+
+    &__content {
+      @include start(column, 34px);
+    }
+
+    &__img {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: 2;
+    }
+
+    &:nth-child(2) {
+      &::before {
+        left: auto;
+        right: 0;
+      }
+
+      .ucard__img {
+        right: 40px;
+        bottom: -25px;
+      }
+    }
+
+    &.last {
+      min-height: 550px;
+      background: radial-gradient(
+        528.94% 74.81% at 2.81% 45.35%,
+        rgb(46, 46, 46) 0%,
+        rgb(133, 133, 133) 100%
+      );
+
+      &::before {
+        height: 70%;
+        width: 100%;
+        background: url(../img/about/bg.svg) center/contain repeat-x;
+      }
+    }
+  }
+}
+
+// ** Buy ** //
+.buy {
+  padding: 100px 0 70px;
+
+  .container {
+    @include flex-row(flex-start, stretch, 25px);
+  }
+
+  .ucard {
+    padding: 55px 50px 45px;
+    width: 100%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 50px 0 rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    flex-grow: 1;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 330px;
+      height: 100%;
+      background: url(../img/about/bg-2.png) center/cover no-repeat;
+      z-index: -1;
+    }
+
+    p {
+      margin: 35px 0;
+    }
+
+    .btn {
+      width: 280px;
+    }
+  }
+}
+
+// ** Process ** //
+.process {
+  padding: 50px 0 70px;
+
+  &__list {
+    margin-top: 90px;
+    @include grid-cols(4, 20px);
+  }
+
+  &__item {
+    position: relative;
+    padding: 35px 24px;
+    color: #fff;
+    background: #914d1c;
+    border-radius: 20px;
+    @include start(column, 25px);
+
+    &-order {
+      position: absolute;
+      top: -8px;
+      right: 25px;
+      width: 62px;
+      height: 62px;
+      background: radial-gradient(
+        832.46% 117.74% at -11.79% -12.16%,
+        rgb(224, 224, 224) 0%,
+        rgb(133, 133, 133) 100%
+      );
+      transform: rotate(-45deg) translateY(-50%);
+      border-bottom: 1px solid #299386;
+      border-radius: 10px;
+      @include center;
+
+      .text-h4 {
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  @include media("2xl", min-width) {
+    .text-h4 {
+      font-size: 40px;
+    }
+  }
+}
+
+// ** Reviews ** //
+.reviews {
+  padding: 50px 0 70px;
+  height: 830px;
+
+  .container {
+    @include start(column, 24px);
+  }
+
+  &__swiper {
+    position: relative;
+    width: 100%;
+    @include start(column, 24px);
+  }
+
+  .swiper-thumbs {
+    margin-top: 15px;
+    width: 100%;
+    height: 200px;
+    max-width: 790px;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  .swiper {
+    position: absolute;
+    top: 0;
+    left: 820px;
+    transform: translateY(-140px);
+    width: 390px;
+    height: 670px;
+    overflow: hidden;
+  }
+
+  .swiper-slide {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .swiper-nav {
+    width: 100%;
+    height: 48px;
+    @include start(row, 36px);
+
+    .btn {
+      width: 48px;
+      height: 48px;
+    }
+
+    .swiper-button-lock {
+      display: flex;
+    }
+  }
+}
+
+// ** Map ** //
+.map {
+  #yamap {
+    width: 100%;
+    height: 660px;
+  }
+}
+
+// @include show(".map", true);
