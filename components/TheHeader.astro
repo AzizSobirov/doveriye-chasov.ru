@@ -3,7 +3,7 @@ const isActive: boolean = false;
 ---
 
 <header class="header" class:list={isActive ? "header-active" : ""}>
-  <div class="container">
+  <nav class="header__nav">
     <a href="/" class="header__logo">
       <Img src="logo.svg" only />
     </a>
@@ -21,25 +21,25 @@ const isActive: boolean = false;
         <Img src="icons/telegram.svg" only />
       </a>
     </div>
-    <div class="header__menu">
+    <div class="header__btn" onclick="toggleNav()">
       <Img src="icons/menu.svg" only />
       <Img src="icons/close.svg" only />
     </div>
-  </div>
-</header>
-
-<!-- <ul class="menu">
-  <li class="menu-item menu-item-has-children">
-    <a href="#" aria-current="page">1 lvl link</a>
-    <ul class="sub-menu">
-      <li class="menu-item"><a href="#">2 lvl link</a></li>
+  </nav>
+  <div class="header__menu">
+    <ul class="menu">
+      <li class="menu-item"><a href="/catalog">Каталог часов</a></li>
       <li class="menu-item menu-item-has-children">
-        <a href="#" aria-current="page">2 lvl link</a>
+        <a href="/services">Услуги</a>
         <ul class="sub-menu">
-          <li class="menu-item"><a href="#">3 lvl link</a></li>
+          <li class="menu-item"><a href="/sell">Продать часы</a></li>
+          <li class="menu-item"><a href="/examination">Экспертиза часов</a></li>
+          <li class="menu-item"><a href="/pricing">Оценка часов</a></li>
         </ul>
       </li>
+      <li class="menu-item"><a href="/about">О нас</a></li>
+      <li class="menu-item"><a href="/contacts">Контакты</a></li>
     </ul>
-  </li>
-  <li class="menu-item"><a href="#" aria-current="page">1 lvl link</a></li>
-</ul> -->
+  </div>
+  <div class="header__close" onclick="toggleNav()"></div>
+</header>

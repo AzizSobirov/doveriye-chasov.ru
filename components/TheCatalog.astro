@@ -1,19 +1,20 @@
 ---
+import { products } from "../index.store";
+
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+
+const formatPrice = (price: number) => {
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+};
 ---
 
 <TheSection name="catalog">
-  <div class="catalog__header">
-    <a href="tel:+79888888888" class="text-2xl">+7 988 888-88-88</a>
-    <Button label="ЗАКАЗАТЬ ЗВОНОК" variant="outline" />
-  </div>
   <H1>{title}</H1>
   <H2>ЭЛИТНЫХ ЧАСОВ</H2>
-
   <div class="catalog__content">
     <div class="catalog__filter">
       <div class="catalog__filter-group" id="filter-collection">
@@ -39,19 +40,13 @@ const { title } = Astro.props;
           <li><a href="/brand3">BLANCPAIN</a></li>
           <li><a href="/brand4">BOVET</a></li>
           <li><a href="/brand5">BREGUET</a></li>
-          <li><a href="/brand">A. LANGE & SOHNE</a></li>
-          <li><a href="/brand">AUDEMARS PIGUET</a></li>
-          <li><a href="/brand">BELL & ROSS</a></li>
-          <li><a href="/brand">BLANCPAIN</a></li>
-          <li><a href="/brand">BOVET</a></li>
-          <li><a href="/brand">BREGUET</a></li>
         </ul>
       </div>
       <div class="catalog__filter-group" id="filter-price">
         <H5>Цена</H5>
         <div class="price-input">
-          <input type="number" value="1000" />
-          <input type="number" value="10000" />
+          <input type="number" placeholder="0" id="min-price" />
+          <input type="number" placeholder="1000000" id="max-price" />
         </div>
         <div class="range-slider">
           <input
@@ -72,7 +67,33 @@ const { title } = Astro.props;
           />
         </div>
       </div>
+      <Button
+        type="link"
+        to="/catalog"
+        variant="filter"
+        label="СБРОСИТЬ ФИЛЬТР"
+      />
     </div>
-    <div class="catalog__products" id="catalog-products"></div>
+    <div class="catalog__products" id="catalog-products">
+      {
+        products.map((item) => (
+          <div
+            class="catalog__product"
+            data-collection={item.collection}
+            data-status={item.status}
+            data-price={item.price}
+          >
+            <a href="/product" class="catalog__product-img">
+              <Img src={item.img} only />
+            </a>
+            <div class="catalog__product-info">
+              <a href="/product">{item.title}</a>
+              <H5>{formatPrice(item.price)} Р</H5>
+              <Button variant="black" label="КУПИТЬ" />
+            </div>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </TheSection>

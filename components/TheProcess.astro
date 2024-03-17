@@ -1,4 +1,12 @@
-<TheSection name="process">
+---
+interface Props {
+  main?: boolean;
+}
+
+const { main = false } = Astro.props;
+---
+
+<TheSection name={main ? "process --main" : "process"}>
   <H3>Как мы работаем</H3>
   <ul class="process__list">
     <li class="process__item">

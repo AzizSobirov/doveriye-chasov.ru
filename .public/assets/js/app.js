@@ -34,107 +34,20 @@ const closePopup = (name, data) => {
 };
 // ** end popup
 
-//** input mask **/
-[].forEach.call(document.querySelectorAll(".v-mask"), function (input) {
-  let keyCode;
-  function mask(event) {
-    event.keyCode && (keyCode = event.keyCode);
-    let pos = this.selectionStart;
-    if (pos < 3) event.preventDefault();
-    let matrix = "+7 (___) ___-__-__",
-      i = 0,
-      def = matrix.replace(/\D/g, ""),
-      val = this.value.replace(/\D/g, ""),
-      newValue = matrix.replace(/[_\d]/g, function (a) {
-        return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
-      });
-    i = newValue.indexOf("_");
-    if (i != -1) {
-      i < 5 && (i = 3);
-      newValue = newValue.slice(0, i);
-    }
-    let reg = matrix
-      .substr(0, this.value.length)
-      .replace(/_+/g, function (a) {
-        return "\\d{1," + a.length + "}";
-      })
-      .replace(/[+()]/g, "\\$&");
-    reg = new RegExp("^" + reg + "$");
-    if (
-      !reg.test(this.value) ||
-      this.value.length < 5 ||
-      (keyCode > 47 && keyCode < 58)
-    )
-      this.value = newValue;
-    if (event.type == "blur" && this.value.length < 5) this.value = "";
-
-    if (this.value.length == 18 || this.value.length == 0) {
-      input.dataset.numbervalid = "true";
-    } else {
-      input.dataset.numbervalid = "false";
-    }
-  }
-
-  input.addEventListener("input", mask, false);
-  input.addEventListener("focus", mask, false);
-  input.addEventListener("blur", mask, false);
-  input.addEventListener("keydown", mask, false);
-});
-
 //** sticky header **/
 const header = document.querySelector(".header");
 window.addEventListener("scroll", function () {
   header.classList.toggle("header-sticky", window.scrollY > 0);
 });
 
-//** form **//
-const form = document.querySelector("#form");
-form?.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  let name = form.querySelector("#name");
-  let phone = form.querySelector("#phone");
-
-  if (phone.dataset.numbervalid === "true") {
-    successSend("form");
-  }
-});
-
-const popupForm = document.querySelector(".popup--form form");
-popupForm?.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  let name = popupForm.querySelector("#name");
-  let phone = popupForm.querySelector("#phone");
-
-  if (phone.dataset.numbervalid === "true") {
-    // alert("Спасибо за заявку. В ближайшее время с вами свяжутся.");
-    successSend();
-  }
-});
-
-function successSend(parent) {
-  let content = document.querySelector(".popup--form #form-content");
-  let success = document.querySelector(".popup--form #form-success");
-
-  content.style.display = "none";
-  success.style.display = "flex";
-
-  if (parent == "form") {
-    openPopup("form");
-  }
-
-  setTimeout(() => {
-    closePopup("form");
-    setTimeout(() => {
-      content.style.display = "flex";
-      success.style.display = "none";
-    }, 500);
-  }, 3000);
+function toggleNav() {
+  header.classList.toggle("header-active");
 }
 
 class Filter {
   constructor() {
+    this.minPriceInp = document.querySelector("#min-price");
+    this.maxPriceInp = document.querySelector("#max-price");
     this.minSlider = document.querySelector("#slider-min");
     this.maxSlider = document.querySelector("#slider-max");
     this.collectionEl = document.querySelectorAll("#filter-collection li");
@@ -223,10 +136,16 @@ class Filter {
     } else {
       this.price_to = this.maxPrice;
     }
+    this.minPriceInp.value = this.price_from;
+    this.maxPriceInp.value = this.price_to;
     this.minSlider.value = (this.price_from * 100) / this.maxPrice;
     this.maxSlider.value = (this.price_to * 100) / this.maxPrice;
 
-    this.save();
+    // products
+    let products = this.productsEl.querySelectorAll(".catalog__product");
+    this.products = products;
+    this.productsEl.innerHTML = "";
+
     this.watch();
     this.render();
   }
@@ -239,7 +158,6 @@ class Filter {
         });
         item.classList.add("active");
         this.save();
-        this.render();
       });
     });
     this.statusEl.forEach((item) => {
@@ -250,7 +168,6 @@ class Filter {
         });
         item.classList.add("active");
         this.save();
-        this.render();
       });
     });
     this.brandEl.forEach((item) => {
@@ -261,6 +178,16 @@ class Filter {
     });
 
     // price inputs
+    this.minPriceInp.addEventListener("input", () => {
+      this.price_from = this.minPriceInp.value;
+      this.minSlider.value = (this.price_from * 100) / this.maxPrice;
+      this.save();
+    });
+    this.maxPriceInp.addEventListener("input", () => {
+      this.price_to = parseInt(this.maxPriceInp.value);
+      this.maxSlider.value = (this.price_to * 100) / this.maxPrice;
+      this.save();
+    });
 
     const updatePrice = () => {
       let gap = this.maxPrice - this.minPrice;
@@ -269,11 +196,9 @@ class Filter {
 
       this.price_from = Math.floor(fromValue);
       this.price_to = Math.floor(toValue);
-
+      this.minPriceInp.value = this.price_from;
+      this.maxPriceInp.value = this.price_to;
       this.save();
-
-      // document.querySelector("#from").textContent = `$${Math.floor(fromValue)}`;
-      // document.querySelector("#to").textContent = `$${Math.floor(toValue)}`;
     };
 
     this.maxSlider.addEventListener("input", () => {
@@ -287,7 +212,6 @@ class Filter {
       }
       updatePrice();
     });
-
     this.minSlider.addEventListener("input", () => {
       let minValue = parseInt(this.minSlider.value);
       let maxValue = parseInt(this.maxSlider.value);
@@ -301,7 +225,26 @@ class Filter {
     });
   }
   render() {
-    //
+    const filteredProducts = [];
+    this.products.forEach((item) => {
+      if (
+        item.dataset.collection == this.collection ||
+        this.collection == null
+      ) {
+        if (item.dataset.status == this.status || this.status == null) {
+          if (
+            parseInt(item.dataset.price) >= this.price_from &&
+            parseInt(item.dataset.price) <= this.price_to
+          ) {
+            filteredProducts.push(item);
+          }
+        }
+      }
+    });
+
+    this.productsEl.innerHTML = filteredProducts
+      .map((item) => item.outerHTML)
+      .join("");
   }
   save(href) {
     let url = new URL(href || window.location);
@@ -309,19 +252,15 @@ class Filter {
     url.searchParams.set("status", this.status);
     url.searchParams.set("from", this.price_from);
     url.searchParams.set("to", this.price_to);
-    window.history.pushState({}, "", url);
-    href && window.location.reload();
+    history.pushState({}, "", url);
+    href ? window.location.reload() : this.render();
   }
 }
 
 let catalog = document.querySelector(".catalog");
-if (catalog) {
-  const filter = new Filter();
-  window.addEventListener("load", () => {
-    filter.init();
-  });
-}
+catalog && new Filter().init();
 
+// ** swiper **//
 var reviewsSwiperThumbs = new Swiper(".reviews__swiper .swiper-thumbs", {
   slidesPerView: 6,
   spaceBetween: 20,
@@ -337,16 +276,32 @@ var reviewsSwiper = new Swiper(".reviews__swiper .swiper", {
     swiper: reviewsSwiperThumbs,
   },
 });
+var productSwiperThumbs = new Swiper(".product__swiper  .swiper-thumbs", {
+  slidesPerView: 4,
+  spaceBetween: 15,
+  direction: "vertical",
+  navigation: {
+    nextEl: ".product .btn-next",
+    prevEl: ".product .btn-prev",
+  },
+});
+var productSwiper = new Swiper(".product__swiper .swiper", {
+  slidesPerView: 1,
+  spaceBetween: 10,
+  thumbs: {
+    swiper: productSwiperThumbs,
+  },
+});
 
 //** fancybox **//
-let dataFancybox = ["reviews"];
+let dataFancybox = ["reviews", "product"];
 dataFancybox.forEach((name) => {
   Fancybox.bind(`[data-fancybox="${name}"]`, {
     Images: { Panzoom: { maxScale: 3 } },
   });
 });
 
-// //** yandex map */
+//** yandex map *//
 ymaps.ready(function () {
   const data = {
     center: [59.915126, 30.336131],
@@ -402,3 +357,104 @@ ymaps.ready(function () {
   });
   myMap.controls.add(zoomControl);
 });
+
+//** form **//
+[].forEach.call(document.querySelectorAll(".v-mask"), function (input) {
+  let keyCode;
+  function mask(event) {
+    event.keyCode && (keyCode = event.keyCode);
+    let pos = this.selectionStart;
+    if (pos < 3) event.preventDefault();
+    let matrix = "+7 (___) ___-__-__",
+      i = 0,
+      def = matrix.replace(/\D/g, ""),
+      val = this.value.replace(/\D/g, ""),
+      newValue = matrix.replace(/[_\d]/g, function (a) {
+        return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
+      });
+    i = newValue.indexOf("_");
+    if (i != -1) {
+      i < 5 && (i = 3);
+      newValue = newValue.slice(0, i);
+    }
+    let reg = matrix
+      .substr(0, this.value.length)
+      .replace(/_+/g, function (a) {
+        return "\\d{1," + a.length + "}";
+      })
+      .replace(/[+()]/g, "\\$&");
+    reg = new RegExp("^" + reg + "$");
+    if (
+      !reg.test(this.value) ||
+      this.value.length < 5 ||
+      (keyCode > 47 && keyCode < 58)
+    )
+      this.value = newValue;
+    if (event.type == "blur" && this.value.length < 5) this.value = "";
+
+    if (this.value.length == 18 || this.value.length == 0) {
+      input.dataset.numbervalid = "true";
+    } else {
+      input.dataset.numbervalid = "false";
+    }
+  }
+
+  input.addEventListener("input", mask, false);
+  input.addEventListener("focus", mask, false);
+  input.addEventListener("blur", mask, false);
+  input.addEventListener("keydown", mask, false);
+});
+
+const fileLabels = document.querySelectorAll("#file-upload");
+fileLabels.forEach((label) => {
+  const inp = label.querySelector("input");
+  const span = label.querySelector("span");
+
+  inp.addEventListener("change", function (e) {
+    span.innerHTML = e.target.files[0].name.slice(0, 30) + "...";
+  });
+});
+
+const form = document.querySelector("#form");
+form?.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  let name = form.querySelector("#name");
+  let phone = form.querySelector("#phone");
+
+  if (phone.dataset.numbervalid === "true") {
+    successSend("form");
+  }
+});
+
+const popupForm = document.querySelector(".popup--form form");
+popupForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  let name = popupForm.querySelector("#name");
+  let phone = popupForm.querySelector("#phone");
+
+  if (phone.dataset.numbervalid === "true") {
+    successSend();
+  }
+});
+
+function successSend(parent) {
+  let content = document.querySelector(".popup--form #form-content");
+  let success = document.querySelector(".popup--form #form-success");
+
+  content.style.display = "none";
+  success.style.display = "flex";
+
+  if (parent == "form") {
+    openPopup("form");
+  }
+
+  setTimeout(() => {
+    closePopup("form");
+    setTimeout(() => {
+      content.style.display = "flex";
+      success.style.display = "none";
+    }, 500);
+  }, 3000);
+}

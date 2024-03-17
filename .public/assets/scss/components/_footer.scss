@@ -1,5 +1,28 @@
 .footer {
-  @include media("sm") {
-    //
+  position: relative;
+  padding: 82px 0 45px;
+  color: #fff;
+  background: var(--text-color);
+
+  &__list {
+    @include start(column, 50px);
+
+    li {
+      @include start(column, 8px);
+    }
+  }
+
+  &__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    @include center(45px, column);
+  }
+
+  &__img {
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }
