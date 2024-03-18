@@ -6,14 +6,21 @@
     <div class="intro__text">
       <div class="text-hero">ВЫКУП</div>
       <H2>ЭЛИТНЫХ ЧАСОВ</H2>
-      <ul class="text-2xl">
+      <ul class="text-xl xl:text-2xl">
         <li>САМАЯ ЛУЧШАЯ ЦЕНА</li>
         <li>ВЫПЛАТА НАЛИЧНЫМИ</li>
         <li>ГАРАНТИЯ АНОНИМНОСТИ</li>
       </ul>
       <Row>
-        <Button label="ПРОДАТЬ ЧАСЫ" />
-        <Button label="КУПИТЬ ЧАСЫ" variant="black" />
+        <Button
+          label="ПРОДАТЬ ЧАСЫ"
+          action="openPopup('form', 'ПРОДАТЬ ЧАСЫ')"
+        />
+        <Button
+          label="КУПИТЬ ЧАСЫ"
+          variant="black"
+          action="openPopup('form', 'КУПИТЬ ЧАСЫ')"
+        />
       </Row>
     </div>
     <div class="intro__product">
@@ -59,7 +66,7 @@
       ROLEX, ULYSSE NARDIN, PATEK PHILIPPE, PIAGET<br /> BREGUET, FRANCK MULLER,
       FRANC VILA, OMEGA<br /> A.LANGE & SOHNE, AUDEMARS PIGUET, ZENITH
     </P>
-    <Button variant="black">СПИСОК БРЕНДОВ</Button>
+    <Button type="link" to="/" variant="black">СПИСОК БРЕНДОВ</Button>
   </TheApplication>
   <!-- Process -->
   <TheProcess main />
@@ -67,4 +74,9 @@
   <TheReviews />
   <!-- Map -->
   <TheMap />
+  <!-- Bg -->
+  <TheSection name="bg --main" only>
+    <Img src="bg.png" only />
+    <Img src="bg.png" only />
+  </TheSection>
 </App>

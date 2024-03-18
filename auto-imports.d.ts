@@ -26,5 +26,4 @@ declare global {
   const TheProcess: typeof import('components/TheProcess.astro')['default']
   const TheReviews: typeof import('components/TheReviews.astro')['default']
   const TheSection: typeof import('components/TheSection.astro')['default']
-  const pricing: typeof import('components/pricing.astro')['default']
 }

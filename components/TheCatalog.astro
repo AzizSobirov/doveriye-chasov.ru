@@ -24,7 +24,7 @@ const formatPrice = (price: number) => {
           <li>Женские</li>
         </ul>
       </div>
-      <div class="catalog__filter-group" id="filter-status">
+      <div class="catalog__filter-group" id="filter-state">
         <H5>Состояние</H5>
         <ul class="text-lg">
           <li>Новые</li>
@@ -40,6 +40,8 @@ const formatPrice = (price: number) => {
           <li><a href="/brand3">BLANCPAIN</a></li>
           <li><a href="/brand4">BOVET</a></li>
           <li><a href="/brand5">BREGUET</a></li>
+          <li><a href="/brand6">A. LANGE & SOHNE</a></li>
+          <li><a href="/brand17">AUDEMARS PIGUET</a></li>
         </ul>
       </div>
       <div class="catalog__filter-group" id="filter-price">
@@ -80,7 +82,7 @@ const formatPrice = (price: number) => {
           <div
             class="catalog__product"
             data-collection={item.collection}
-            data-status={item.status}
+            data-state={item.state}
             data-price={item.price}
           >
             <a href="/product" class="catalog__product-img">
@@ -89,7 +91,11 @@ const formatPrice = (price: number) => {
             <div class="catalog__product-info">
               <a href="/product">{item.title}</a>
               <H5>{formatPrice(item.price)} Р</H5>
-              <Button variant="black" label="КУПИТЬ" />
+              <Button
+                variant="black"
+                label="КУПИТЬ"
+                action="openPopup('form', 'КУПИТЬ ЧАСЫ')"
+              />
             </div>
           </div>
         ))

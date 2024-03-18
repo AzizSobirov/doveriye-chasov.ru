@@ -88,7 +88,11 @@ const images = [0, 1, 2, 3, 4];
       </div>
       <div class="product__details">
         <H3 class="text-primary">3 888 000 Р</H3>
-        <Button label="КУПИТЬ" variant="black" />
+        <Button
+          label="КУПИТЬ"
+          variant="black"
+          action="openPopup('form', 'КУПИТЬ')"
+        />
         <Row>
           <ul>
             <li><div class="text-primary">Тип:</div> Классические</li>
@@ -125,4 +129,10 @@ const images = [0, 1, 2, 3, 4];
   </TheSection>
   <!-- Offer -->
   <TheOffer />
+  <!-- Map -->
+  <TheMap />
+  <!-- Bg -->
+  <TheSection name="bg " only>
+    <Img src="bg.png" only />
+  </TheSection>
 </App>
