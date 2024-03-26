@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/assets/css/swiper.min.css">
     <link rel="stylesheet" href="/assets/css/fancybox.min.css">
     <title>Бренд</title>
-  <link rel="stylesheet" href="/assets/css/app.tYOJXNdg.css" /></head>
+  <link rel="stylesheet" href="/assets/css/app.Cmr9OnL-.css" /></head>
   <body>
     <div class="popup popup--form">
   <div class="popup__bg" onclick="closePopup('form')"></div>
@@ -29,8 +29,8 @@
 </p>
   <input type="text" name="name" id="name" placeholder="Ваше имя" minlength="3" required>
   <input type="text" class="v-mask" name="phone" id="phone" placeholder="Номер телефона" required>
-  <label for="file-982" id="file-upload">
-    <input type="file" name="file" id="file-982">
+  <label for="file-835" id="file-upload">
+    <input type="file" name="file" id="file-835">
     <img src="/assets/img/icons/file.svg" alt="">
     <span class="sm:text-xl">Добавить фото</span>
   </label>
@@ -126,54 +126,64 @@
 </div>
   <div class="catalog__content">
     <div class="catalog__filter">
-      <div class="catalog__filter-group" id="filter-collection">
-        <div class="text-h5">
+      <div class="catalog__filter-btn" onclick="document.querySelector('.catalog__filter').classList.toggle('active')">
+        <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M18.4857 5.82358C14.5076 5.37896 10.4922 5.37896 6.51407 5.82358C6.2449 5.85366 6.11528 6.16931 6.28562 6.37988L9.80264 10.7274C11.0625 12.2848 11.7499 14.2274 11.7499 16.2306V19.1198L13.2499 20.2198V16.2306C13.2499 14.2274 13.9373 12.2848 15.1972 10.7274L18.7142 6.37988C18.8845 6.16931 18.7549 5.85366 18.4857 5.82358ZM6.34746 4.33286C10.4364 3.87586 14.5634 3.87586 18.6523 4.33286C20.0993 4.49457 20.7961 6.19136 19.8804 7.32329L16.3633 11.6708C15.3194 12.9613 14.7499 14.5708 14.7499 16.2306V21.6999C14.7499 21.9825 14.591 22.2412 14.3389 22.3689C14.0868 22.4967 13.7843 22.4718 13.5564 22.3047L10.5564 20.1047C10.3637 19.9634 10.2499 19.7388 10.2499 19.4999V16.2306C10.2499 14.5708 9.68037 12.9613 8.63646 11.6708L5.11944 7.32329C4.20375 6.19136 4.90053 4.49457 6.34746 4.33286Z" fill="#b97816"></path></svg>
+        <p>Фильтр</p>
+      </div>
+      <div class="catalog__filter-content">
+        
+        <div class="catalog__filter-group" id="filter-collection">
+          <div class="text-h5">
   Коллекция
 </div>
-        <ul class="text-lg">
-          <li>Мужские</li>
-          <li>Женские</li>
-        </ul>
-      </div>
-      <div class="catalog__filter-group" id="filter-state">
-        <div class="text-h5">
+          <ul class="text-lg">
+            <li>Мужские</li>
+            <li>Женские</li>
+          </ul>
+        </div>
+        <div class="catalog__filter-group" id="filter-state">
+          <div class="text-h5">
   Состояние
 </div>
-        <ul class="text-lg">
-          <li>Новые</li>
-          <li>Б/У</li>
-        </ul>
-      </div>
-      <div class="catalog__filter-group" id="filter-brand">
-        <div class="text-h5">
+          <ul class="text-lg">
+            <li>Новые</li>
+            <li>Б/У</li>
+          </ul>
+        </div>
+        <div class="catalog__filter-group" id="filter-brand">
+          <div class="text-h5">
   Бренд
 </div>
-        <ul class="text-lg">
-          <li><a href="/brand">A. LANGE & SOHNE</a></li>
-          <li><a href="/brand1">AUDEMARS PIGUET</a></li>
-          <li><a href="/brand2">BELL & ROSS</a></li>
-          <li><a href="/brand3">BLANCPAIN</a></li>
-          <li><a href="/brand4">BOVET</a></li>
-          <li><a href="/brand5">BREGUET</a></li>
-          <li><a href="/brand6">A. LANGE & SOHNE</a></li>
-          <li><a href="/brand17">AUDEMARS PIGUET</a></li>
-        </ul>
-      </div>
-      <div class="catalog__filter-group" id="filter-price">
-        <div class="text-h5">
+          <ul class="text-lg">
+            <li><a href="/brand">A. LANGE & SOHNE</a></li>
+            <li><a href="/brand1">AUDEMARS PIGUET</a></li>
+            <li><a href="/brand2">BELL & ROSS</a></li>
+            <li><a href="/brand3">BLANCPAIN</a></li>
+            <li><a href="/brand4">BOVET</a></li>
+            <li><a href="/brand5">BREGUET</a></li>
+            <li><a href="/brand6">A. LANGE & SOHNE</a></li>
+            <li><a href="/brand17">AUDEMARS PIGUET</a></li>
+          </ul>
+        </div>
+        <div class="catalog__filter-group" id="filter-price">
+          <div class="text-h5">
   Цена
 </div>
-        <div class="price-input">
-          <input type="number" placeholder="0" id="min-price">
-          <input type="number" placeholder="1000000" id="max-price">
+          <div class="price-input">
+            <input type="number" placeholder="0" id="min-price">
+            <input type="number" placeholder="1000000" id="max-price">
+          </div>
+          <div class="range-slider">
+            <input id="slider-min" type="range" min="0" max="100" value="0" step="0.0001">
+            <input id="slider-max" type="range" min="0" max="100" value="100" step="0.0001">
+          </div>
         </div>
-        <div class="range-slider">
-          <input id="slider-min" type="range" min="0" max="100" value="0" step="0.0001">
-          <input id="slider-max" type="range" min="0" max="100" value="100" step="0.0001">
-        </div>
-      </div>
-      <a href="/catalog" class="btn btn--filter">
+        <a href="/catalog" class="btn btn--filter">
 СБРОСИТЬ ФИЛЬТР</a>
+      </div>
+      <div class="catalog__filter-close" onclick="document.querySelector('.catalog__filter').classList.toggle('active')">
+        <img src="/assets/img/icons/close.svg" alt="">
+      </div>
     </div>
     <div class="catalog__products" id="catalog-products">
       <div class="catalog__product" data-collection="Мужские" data-state="Новые" data-price="3888000">
@@ -521,6 +531,6 @@
     <script src="/assets/js/yandexmap.min.js"></script>
     <script src="/assets/js/swiper.min.js"></script>
     <script src="/assets/js/fancybox.min.js"></script>
-    <script src="/assets/js/app.js?v=1710768816679"></script>
+    <script src="/assets/js/app.js?v=1711480766319"></script>
   </body>
 </html>
